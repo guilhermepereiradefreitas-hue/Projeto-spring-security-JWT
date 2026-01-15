@@ -1,7 +1,5 @@
 package Projeto.Projeto_spring_security_JWT.controller;
 
-package Projeto.Projeto_spring_security_JWT.controller;
-
 import Projeto.Projeto_spring_security_JWT.dto.Login;
 import Projeto.Projeto_spring_security_JWT.dto.Sessao;
 import Projeto.Projeto_spring_security_JWT.model.User;
