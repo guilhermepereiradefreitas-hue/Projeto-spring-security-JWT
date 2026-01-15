@@ -1,7 +1,6 @@
 package Projeto.Projeto_spring_security_JWT.security;
 
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import jakarta.servlet.Servlet;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.h2.server.web.WebServlet;
+
 
 @Configuration
 public class WebSecurityConfig {
@@ -28,8 +27,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JWTFilter jwtFilter) throws Exception {
 
-        http
-            // Equivalente a headers().frameOptions().disable()
+         http
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> {})
             .headers(headers ->
                 headers.frameOptions(frame -> frame.disable())
             )
@@ -61,17 +61,13 @@ public class WebSecurityConfig {
             )
 
             // Stateless (JWT)
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            
+            .addFilterBefore(
+                jwtFilter,
+                UsernamePasswordAuthenticationFilter.class        
             );
 
         return http.build();
     }
 
-    @Bean //HABILITANDO O ACESSO AO H2- CONSOLE
-    public ServletRegistrationBean<WebServlet> h2servletRegistration(){
-        ServletRegistrationBean<WebServlet> registrationBean = new ServletRegistrationBean<WebServlet>( new WebServlet());
-        registrationBean.addUrlMappings("/h2-console/*");
-        return registrationBean;
-    }
 }
